@@ -1,6 +1,6 @@
 export const nflTeams = [
-  { id: "default-a", location: "Team A", name: "Team A", primaryColor: "#9333EA", secondaryColor: "#7C3AED", conference: null, division: null },
-  { id: "default-b", location: "Team B", name: "Team B", primaryColor: "#22C55E", secondaryColor: "#16A34A", conference: null, division: null },
+  { id: "default-a", location: "", name: "Team A", primaryColor: "#9333EA", secondaryColor: "#7C3AED", conference: null, division: null },
+  { id: "default-b", location: "", name: "Team B", primaryColor: "#22C55E", secondaryColor: "#16A34A", conference: null, division: null },
   
   // NFC North
   { id: "min", location: "Minnesota", name: "Vikings", primaryColor: "#4F2683", secondaryColor: "#FFC62F", conference: "NFC", division: "North" },

@@ -8,7 +8,9 @@ function TradeDetails({
   tradeValues, 
   chartValues,
   teamALocation,
-  teamBLocation
+  teamBLocation,
+  teamAName,
+  teamBName
 }) {
   const teamAPickValues = getPickValues(teamAPicks, chartValues);
   const teamBPickValues = getPickValues(teamBPicks, chartValues);
@@ -17,7 +19,7 @@ function TradeDetails({
   return (
     <div className="trade-details">
       <div className="details-section">
-        <h4>{teamALocation} sends:</h4>
+        <h4>{teamALocation != "" ? teamALocation : teamAName} sends:</h4>
         <ul>
           {teamAPickValues.map(({ pick, value }) => (
             <li key={pick}>{formatPickNumber(pick)}: {formatNumber(value)}</li>
@@ -27,7 +29,7 @@ function TradeDetails({
       </div>
 
       <div className="details-section">
-        <h4>{teamBLocation} sends:</h4>
+        <h4>{teamBLocation != "" ? teamBLocation : teamBName} sends:</h4>
         <ul>
           {teamBPickValues.map(({ pick, value }) => (
             <li key={pick}>{formatPickNumber(pick)}: {formatNumber(value)}</li>

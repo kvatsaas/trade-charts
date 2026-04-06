@@ -74,6 +74,8 @@ function TradeChartCard({
             chartValues={chart.values}
             teamALocation={teamAData.location}
             teamBLocation={teamBData.location}
+            teamAName={teamAData.name}
+            teamBName={teamBData.name}
           />
         )}
       </div>
