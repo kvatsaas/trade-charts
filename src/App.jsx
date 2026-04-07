@@ -24,7 +24,7 @@ function App() {
   const teamAData = nflTeams.find(t => t.id === teamAId);
   const teamBData = nflTeams.find(t => t.id === teamBId);
 
-  const allSelectedPicks = [...teamAPicks, ...teamBPicks];
+  const allSelectedPicks = [...teamAPicks, ...teamBPicks].map(pick => pick.id);
 
   const handleAddPickTeamA = (pick) => {
     if (!teamAPicks.includes(pick)) {
