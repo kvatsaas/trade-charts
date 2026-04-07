@@ -2,7 +2,8 @@
 
 ## Existing Features
 
-- Correct trade chart values (with some extrapolation) for five different charts
+- Choose current-year picks for your selected team (displayed by default) or select any pick
+- Trade chart values (with some extrapolation) for five different charts
 - Shows value difference as both points and percentage
 - Shows value for each pick individually
 - Calculates the pick number closest to making the trade even
@@ -13,8 +14,6 @@
 - Improve design/UI
 - Clean up/refactor code as needed
 - Improve pick search
-- Mark picks owned by the selected team
- - Might eventually want to do this for each year, so keep that in mind 
 - Add a button to update team inventory with the current trade (only with real teams selected)
   - This should clear the selected picks and display the list of trades made
   - User can label the trade (optional)
