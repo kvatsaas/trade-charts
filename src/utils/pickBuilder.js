@@ -1,10 +1,9 @@
 import draftRoundsData from '../data/draftRounds.json';
+import inventory from '../data/inventory.json'
 
-// Get round cutoffs for current year (default to 2026)
 const currentYear = 2026;
 const roundCutoffs = draftRoundsData[currentYear.toString()];
 
-// Format pick number with round information (e.g., "5 (1.5)")
 export function buildPick(pickId) {
   let mrIrrelevant = roundCutoffs[roundCutoffs.length - 1];
   let pickRound = 1;
@@ -27,9 +26,13 @@ export function buildPick(pickId) {
     yearsAhead: futureYears,
     number: pickInYear,
     round: pickRound,
-    roundPick: pickInRound
+    roundPick: pickInRound,
   }
-  pick.formatted = `${pick.year} #${pick.number} (${pick.round}.${pick.roundPick})`
+  pick.currentOwner = futureYears ? null : inventory[pick.year].order[pick.number].current;
+  let previous = futureYears ? null : inventory[pick.year].order[pick.number].previous.length;
+  pick.previousOwners = previous && previous.length ? previous : null;
+  pick.formattedNoYear = `#${pick.number} (${pick.round}.${pick.roundPick.toString().padStart(2, '0')})`;
+  pick.formatted = `${pick.year} ${pick.formattedNoYear}`;
 
   return pick;
 }

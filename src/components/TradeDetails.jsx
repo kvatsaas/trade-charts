@@ -47,10 +47,12 @@ function TradeDetails({
           <div className="closest-pick">
             {closestPick.greaterThanFirst ? (
               `Greater than the #1 pick (${closestPick.value})`
+            ) : closestPick.lessThanLast ? (
+              `Less than the last pick (${closestPick.value})`
             ) : closestPick.isRange ? (
-              `Closest: ${buildPick(Math.min(...closestPick.picks)).formatted}-${buildPick(Math.max(...closestPick.picks)).formatted} - ${closestPick.value}`
+              `${buildPick(Math.min(...closestPick.picks)).formattedNoYear} to ${buildPick(Math.max(...closestPick.picks)).formattedNoYear} - ${closestPick.value}`
             ) : (
-              `Closest: ${buildPick(closestPick.picks[0]).formatted} - ${closestPick.value}`
+              `${buildPick(closestPick.picks[0]).formattedNoYear} - ${closestPick.value}`
             )}
           </div>
         )}

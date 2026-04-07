@@ -12,6 +12,7 @@
 
 - Improve design/UI
 - Clean up/refactor code as needed
+- Improve pick search
 - Mark picks owned by the selected team
  - Might eventually want to do this for each year, so keep that in mind 
 - Add a button to update team inventory with the current trade (only with real teams selected)

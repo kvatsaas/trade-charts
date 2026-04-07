@@ -107,6 +107,7 @@ function App() {
           <PickSelector
             onAddPick={handleAddPickTeamA}
             excludedPicks={allSelectedPicks}
+            selectedTeamId={teamAId}
           />
           <SelectedPicks
             picks={teamAPicks}
@@ -125,6 +126,7 @@ function App() {
           <PickSelector
             onAddPick={handleAddPickTeamB}
             excludedPicks={allSelectedPicks}
+            selectedTeamId={teamBId}
           />
           <SelectedPicks
             picks={teamBPicks}

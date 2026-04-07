@@ -1,15 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { buildPick } from '../utils/pickBuilder';
 
-function PickSelector({ onAddPick, excludedPicks }) {
+function PickSelector({ onAddPick, excludedPicks, selectedTeamId}) {
   const [searchValue, setSearchValue] = useState('');
   const [filteredPicks, setFilteredPicks] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const inputRef = useRef(null);
 
   const futureYearsAllowed = 3;
-  // Generate all picks 1-257
   const allPicks = Array.from({ length: 257 * (1 + futureYearsAllowed) }, (_, i) => buildPick(i + 1));
 
   useEffect(() => {
@@ -19,19 +17,21 @@ function PickSelector({ onAddPick, excludedPicks }) {
         pick.formatted.includes(searchValue)
       );
       setFilteredPicks(available);
-      setShowDropdown(available.length > 0);
       setSelectedIndex(0);
     } else {
-      setFilteredPicks([]);
-      setShowDropdown(false);
+      const teamPicks = allPicks.filter(pick =>
+        pick.currentOwner === selectedTeamId && 
+        !excludedPicks.includes(pick.id)
+      );
+      setFilteredPicks(teamPicks);
+      setSelectedIndex(0);
     }
-  }, [searchValue, excludedPicks]);
+  }, [searchValue, excludedPicks, selectedTeamId]);
 
   const handleAddPick = (pick) => {
     onAddPick(pick);
     setSearchValue('');
     setShowDropdown(false);
-    inputRef.current?.focus();
   };
 
   const handleKeyDown = (e) => {
@@ -56,13 +56,13 @@ function PickSelector({ onAddPick, excludedPicks }) {
   return (
     <div className="pick-selector">
       <input
-        ref={inputRef}
         type="text"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        onFocus={() => searchValue && setShowDropdown(filteredPicks.length > 0)}
-        placeholder="Type pick number..."
+        onFocus={() => setShowDropdown(filteredPicks.length > 0)}
+        onBlur={() => setShowDropdown(false)}
+        placeholder="type to search all picks"
         className="pick-input"
       />
       {showDropdown && (
@@ -71,7 +71,7 @@ function PickSelector({ onAddPick, excludedPicks }) {
             <div
               key={pick.id}
               className={`pick-option ${index === selectedIndex ? 'selected' : ''}`}
-              onClick={() => handleAddPick(pick)}
+              onMouseDown={() => handleAddPick(pick)}
               onMouseEnter={() => setSelectedIndex(index)}
             >
               {pick.formatted}

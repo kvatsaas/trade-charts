@@ -40,49 +40,75 @@ export function findClosestPick(difference, chartValues) {
   }
   
   // Check if difference is greater than the #1 pick value
-  const firstPickValue = chartValues[0];
-  if (difference > firstPickValue) {
+  if (difference > chartValues[1]) {
     return {
       picks: null,
-      value: firstPickValue,
+      value: chartValues[1],
       greaterThanFirst: true
     };
   }
   
-  let closestDiff = Infinity;
-  let closestPicks = [];
-  
-  chartValues.forEach((value, index) => {
-    const diff = Math.abs(value - difference);
-    if (diff < closestDiff) {
-      closestDiff = diff;
-      closestPicks = [index + 1];
-    } else if (diff === closestDiff) {
-      closestPicks.push(index + 1);
-    }
-  });
-  
-  // If multiple picks have the same value, return as a range
-  if (closestPicks.length > 1) {
-    // Check if they're all the same value
-    const firstValue = chartValues[closestPicks[0] - 1];
-    const allSameValue = closestPicks.every(pick => getPickValue(pick, chartValues) === firstValue);
-    
-    if (allSameValue) {
-      return {
-        picks: closestPicks,
-        value: firstValue,
-        isRange: true
-      };
-    }
+  // Check if difference is less than the last pick value
+  if (difference < chartValues[chartValues.length - 1]) {
+    return {
+      picks: null,
+      value: chartValues[chartValues.length - 1],
+      lessThanLast: true
+    };
   }
   
-  // Return the highest pick if there are two equally close
-  return {
-    picks: [Math.min(...closestPicks)],
-    value: chartValues[Math.min(...closestPicks) - 1],
-    isRange: false
-  };
+  let closestPick = null;
+  let left = 1;
+  let right = chartValues.length - 1;
+
+  // binary search for exact value
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (chartValues[mid] === difference) {
+      closestPick = mid;
+      break;
+    } else if (chartValues[mid] > difference) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  // if no exact match, find the closest value
+  if (closestPick === null) {
+    closestPick = (Math.abs(chartValues[left] - difference) <= Math.abs(chartValues[right] - difference)) ? left : right;
+  }
+  
+  // check for neighboring matches
+  left = closestPick;
+  right = closestPick;
+  while (left > 1) {
+    if (chartValues[left - 1] == chartValues[closestPick]) {
+      left--;
+    } else {
+      break;
+    }
+  }
+  while (right < chartValues.length - 1) {
+    if (chartValues[right + 1] == chartValues[closestPick]) {
+      right++;
+    } else {
+      break;
+    }
+  }
+  if (left == right) {
+    return {
+      picks: [closestPick],
+      value: chartValues[closestPick],
+      isRange: false
+    }
+  } else {
+    return {
+      picks: [left, right],
+      value: chartValues[closestPick],
+      isRange: true
+    }
+  }
 }
 
 // Get individual pick values for display
