@@ -294,8 +294,8 @@ body {
 
 .tooltip {
   position: absolute;
-  top: 100%;
-  right: 0;
+  bottom: 100%;
+  left: 0;
   margin-top: 5px;
   padding: 10px;
   background: var(--bg-tertiary);
@@ -304,8 +304,7 @@ body {
   box-shadow: 0 4px 6px var(--shadow);
   z-index: 200;
   min-width: 200px;
-  max-width: 300px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
 }
 

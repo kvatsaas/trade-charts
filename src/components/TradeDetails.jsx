@@ -1,5 +1,5 @@
 import { getPickValues, findClosestPick } from '../utils/tradeUtils';
-import { formatPickNumber } from '../utils/pickFormatter';
+import { buildPick } from '../utils/pickBuilder';
 import { formatNumber } from '../utils/formatNumber';
 
 function TradeDetails({ 
@@ -22,7 +22,7 @@ function TradeDetails({
         <h4>{teamALocation != "" ? teamALocation : teamAName} sends:</h4>
         <ul>
           {teamAPickValues.map(({ pick, value }) => (
-            <li key={pick}>{formatPickNumber(pick)}: {formatNumber(value)}</li>
+            <li key={pick.id}>{pick.formatted}: {formatNumber(value)}</li>
           ))}
         </ul>
         <div className="total">Total: {formatNumber(tradeValues.teamAGiving)}</div>
@@ -32,7 +32,7 @@ function TradeDetails({
         <h4>{teamBLocation != "" ? teamBLocation : teamBName} sends:</h4>
         <ul>
           {teamBPickValues.map(({ pick, value }) => (
-            <li key={pick}>{formatPickNumber(pick)}: {formatNumber(value)}</li>
+            <li key={pick.id}>{pick.formatted}: {formatNumber(value)}</li>
           ))}
         </ul>
         <div className="total">Total: {formatNumber(tradeValues.teamBGiving)}</div>
@@ -48,9 +48,9 @@ function TradeDetails({
             {closestPick.greaterThanFirst ? (
               `Greater than the #1 pick (${closestPick.value})`
             ) : closestPick.isRange ? (
-              `Closest: ${formatPickNumber(Math.min(...closestPick.picks))}-${formatPickNumber(Math.max(...closestPick.picks))} - ${closestPick.value}`
+              `Closest: ${buildPick(Math.min(...closestPick.picks)).formatted}-${buildPick(Math.max(...closestPick.picks)).formatted} - ${closestPick.value}`
             ) : (
-              `Closest: ${formatPickNumber(closestPick.picks[0])} - ${closestPick.value}`
+              `Closest: ${buildPick(closestPick.picks[0]).formatted} - ${closestPick.value}`
             )}
           </div>
         )}

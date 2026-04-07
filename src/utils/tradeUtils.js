@@ -7,8 +7,8 @@ export function calculateTradeValues(teamAPicks, teamBPicks, chartValues, teamAN
   // Use proper rounding to avoid floating point errors
   const roundValue = (val) => Math.round(val * 100) / 100;
   
-  const teamAGiving = roundValue(teamAPicks.reduce((sum, pick) => sum + chartValues[pick - 1], 0));
-  const teamBGiving = roundValue(teamBPicks.reduce((sum, pick) => sum + chartValues[pick - 1], 0));
+  const teamAGiving = roundValue(teamAPicks.reduce((sum, pick) => sum + getPickValue(pick, chartValues), 0));
+  const teamBGiving = roundValue(teamBPicks.reduce((sum, pick) => sum + getPickValue(pick, chartValues), 0));
   
   const difference = roundValue(Math.abs(teamAGiving - teamBGiving));
   const smallerValue = Math.min(teamAGiving, teamBGiving);
@@ -66,7 +66,7 @@ export function findClosestPick(difference, chartValues) {
   if (closestPicks.length > 1) {
     // Check if they're all the same value
     const firstValue = chartValues[closestPicks[0] - 1];
-    const allSameValue = closestPicks.every(pick => chartValues[pick - 1] === firstValue);
+    const allSameValue = closestPicks.every(pick => getPickValue(pick, chartValues) === firstValue);
     
     if (allSameValue) {
       return {
@@ -89,6 +89,11 @@ export function findClosestPick(difference, chartValues) {
 export function getPickValues(picks, chartValues) {
   return picks.map(pick => ({
     pick,
-    value: chartValues[pick - 1]
+    value: getPickValue(pick, chartValues)
   }));
+}
+
+function getPickValue(pick, chartValues) {
+  let adjustedPick = pick.number + (pick.yearsAhead * 32);
+  return chartValues[Math.min(adjustedPick, chartValues.length - 1)];
 }
