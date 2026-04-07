@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { nflTeams } from '../data/nflTeams';
+import nflTeams from '../data/nflTeams.json';
 
 function TeamSelector({ value, onChange, side }) {
   const [inputValue, setInputValue] = useState('');

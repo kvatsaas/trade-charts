@@ -95,5 +95,5 @@ export function getPickValues(picks, chartValues) {
 
 function getPickValue(pick, chartValues) {
   let adjustedPick = pick.number + (pick.yearsAhead * 32);
-  return chartValues[Math.min(adjustedPick, chartValues.length - 1)];
+  return chartValues[Math.min(adjustedPick - 1, chartValues.length - 1)];
 }

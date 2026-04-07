@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import tradeChartsData from './data/tradeCharts.json';
-import { nflTeams } from './data/nflTeams';
+import nflTeams from './data/nflTeams.json';
 import TeamSelector from './components/TeamSelector';
 import PickSelector from './components/PickSelector';
 import SelectedPicks from './components/SelectedPicks';
