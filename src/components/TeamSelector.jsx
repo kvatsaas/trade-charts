@@ -20,7 +20,7 @@ function TeamSelector({ value, onChange, side }) {
     if (showDropdown) {
       if (inputValue) {
         const filtered = availableTeams.filter(team =>
-          team.name.toLowerCase().includes(inputValue.toLowerCase())
+          `${team.location.toLowerCase()} ${team.name.toLowerCase()}`.includes(inputValue.toLowerCase())
         );
         setFilteredTeams(filtered);
         setSelectedIndex(0);
