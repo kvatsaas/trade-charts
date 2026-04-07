@@ -2,7 +2,6 @@ import draftRoundsData from '../data/draftRounds.json';
 
 // Get round cutoffs for current year (default to 2026)
 const currentYear = 2026;
-const futureYearsAllowed = 2;
 const roundCutoffs = draftRoundsData[currentYear.toString()];
 
 // Format pick number with round information (e.g., "5 (1.5)")

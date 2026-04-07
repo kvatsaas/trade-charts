@@ -8,7 +8,7 @@ function PickSelector({ onAddPick, excludedPicks }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef(null);
 
-  const futureYearsAllowed = 2;
+  const futureYearsAllowed = 3;
   // Generate all picks 1-257
   const allPicks = Array.from({ length: 257 * (1 + futureYearsAllowed) }, (_, i) => buildPick(i + 1));
 
