@@ -148,6 +148,7 @@ function App() {
         <div className="team-section team-a">
           <TeamSelector
             value={teamAId}
+            otherValue={teamBId}
             onChange={setTeamAId}
             side="A"
           />
@@ -167,6 +168,7 @@ function App() {
         <div className="team-section team-b">
           <TeamSelector
             value={teamBId}
+            otherValue={teamAId}
             onChange={setTeamBId}
             side="B"
           />

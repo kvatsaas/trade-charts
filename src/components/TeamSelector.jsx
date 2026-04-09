@@ -1,7 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import nflTeams from '../data/nflTeams.json';
 
-function TeamSelector({ value, onChange, side }) {
+function TeamSelector({
+  value,
+  otherValue,
+  onChange,
+  side
+}) {
   const [inputValue, setInputValue] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -9,8 +14,8 @@ function TeamSelector({ value, onChange, side }) {
 
   // Filter teams based on side - only show Team A on left, Team B on right
   const availableTeams = side === 'A' 
-    ? nflTeams.filter(t => t.id !== 'default-b')
-    : nflTeams.filter(t => t.id !== 'default-a');
+    ? nflTeams.filter(t => t.id !== 'default-b' && t.id !== value && t.id !== otherValue)
+    : nflTeams.filter(t => t.id !== 'default-a' && t.id !== value && t.id !== otherValue);
 
   // Get current team name for display (location + name)
   const currentTeam = nflTeams.find(t => t.id === value);
