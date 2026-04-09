@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { buildPickFromParamString, pickIdToParamString } from './utils/pickBuilder';
 import tradeChartsData from './data/tradeCharts.json';
 import nflTeams from './data/nflTeams.json';
 import TeamSelector from './components/TeamSelector';
@@ -6,6 +7,7 @@ import PickSelector from './components/PickSelector';
 import SelectedPicks from './components/SelectedPicks';
 import TradeChartCard from './components/TradeChartCard';
 import SettingsModal from './components/SettingsModal';
+import ShareTradeButton from './components/ShareTradeButton';
 import './App.css';
 
 function App() {
@@ -21,19 +23,51 @@ function App() {
   );
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
+  useEffect(() => {
+    // handle search params
+    const searchParams = new URLSearchParams(window.location.search);
+    const paramAPicks = [];
+    const paramBPicks = [];
+    if (searchParams.size > 0) {
+      if (searchParams.has('teama') && nflTeams.some(t => t.id === searchParams.get('teama'))) {
+        setTeamAId(searchParams.get('teama'));
+      }
+      if (searchParams.has('teamb') && nflTeams.some(t => t.id === searchParams.get('teamb'))) {
+        setTeamBId(searchParams.get('teamb'));
+      }
+      searchParams.getAll('a').forEach(a => {
+        let pick = buildPickFromParamString(a);
+        if (pick !== null && !paramAPicks.some(p => p.id === pick.id)) {
+          paramAPicks.push(pick);
+        }
+      });
+      searchParams.getAll('b').forEach(b => {
+        let pick = buildPickFromParamString(b);
+        if (pick !== null && !paramBPicks.some(p => p.id === pick.id)) {
+          paramBPicks.push(pick);
+        }
+      });;
+      setTeamAPicks([...paramAPicks]);
+      setTeamBPicks([...paramBPicks]);
+      const url = new URL(window.location);
+      url.search = ""; // Clear parameters
+      window.history.replaceState({}, document.title, url.pathname);
+    }
+  }, [])
+
   const teamAData = nflTeams.find(t => t.id === teamAId);
   const teamBData = nflTeams.find(t => t.id === teamBId);
 
   const allSelectedPicks = [...teamAPicks, ...teamBPicks].map(pick => pick.id);
 
   const handleAddPickTeamA = (pick) => {
-    if (!teamAPicks.includes(pick)) {
+    if (!teamAPicks.includes(pick) && !teamBPicks.includes(pick)) {
       setTeamAPicks([...teamAPicks, pick]);
     }
   };
 
   const handleAddPickTeamB = (pick) => {
-    if (!teamBPicks.includes(pick)) {
+    if (!teamBPicks.includes(pick) && !teamAPicks.includes(pick)) {
       setTeamBPicks([...teamBPicks, pick]);
     }
   };
@@ -69,16 +103,23 @@ function App() {
     const currentIndex = chartOrder.indexOf(chartId);
     if (direction === 'up' && currentIndex > 0) {
       const newOrder = [...chartOrder];
-      [newOrder[currentIndex], newOrder[currentIndex - 1]] = 
+      [newOrder[currentIndex], newOrder[currentIndex - 1]] =
         [newOrder[currentIndex - 1], newOrder[currentIndex]];
       setChartOrder(newOrder);
     } else if (direction === 'down' && currentIndex < chartOrder.length - 1) {
       const newOrder = [...chartOrder];
-      [newOrder[currentIndex], newOrder[currentIndex + 1]] = 
+      [newOrder[currentIndex], newOrder[currentIndex + 1]] =
         [newOrder[currentIndex + 1], newOrder[currentIndex]];
       setChartOrder(newOrder);
     }
   };
+
+  const buildShareTradeLink = () => {
+    const aPicks = teamAPicks.map(a => `a=${pickIdToParamString(a)}`).join('&');
+    const bPicks = teamBPicks.map(b => `b=${pickIdToParamString(b)}`).join('&');
+    console.log(`${window.location.href}?teama=${teamAId}&teamb=${teamBId}&${aPicks}&${bPicks}`);
+    return `${window.location.href}?teama=${teamAId}&teamb=${teamBId}&${aPicks}&${bPicks}`;
+  }
 
   const visibleChartsInOrder = chartOrder
     .filter(id => visibleCharts.includes(id))
@@ -88,13 +129,19 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>NFL Draft Trade Calculator</h1>
-        <button 
-          className="settings-button"
-          onClick={() => setIsSettingsOpen(true)}
-          title="Chart Settings"
-        >
-          ⚙️
-        </button>
+        <div className="header-actions">
+          <ShareTradeButton
+            buildLink={buildShareTradeLink}
+            active={teamAPicks.length > 0 && teamBPicks.length > 0}
+          />
+          <button
+            className="settings-button"
+            onClick={() => setIsSettingsOpen(true)}
+            title="Settings"
+          >
+            ⚙️
+          </button>
+        </div>
       </header>
 
       <div className="trade-setup">

@@ -31,6 +31,7 @@
   - Maybe combine this with the trade list feature - select a team to show cumulative value for all their trades in the list? Or one button to show for everyone? Or both?
 - Import/export options:
   - Export valuation of single trade, list of trades for multiple teams, cumulative trades for one team for easy sharing
+- Add URL search parameters for more direct sharing
 - Improve valuation method for future picks
 - Add various settings:
   - change to different year (need to add cutoffs for past classes)

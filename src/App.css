@@ -46,6 +46,12 @@ body {
   color: var(--text-primary);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .settings-button {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -60,6 +66,61 @@ body {
 .settings-button:hover {
   background: var(--hover-bg);
   transform: scale(1.05);
+}
+
+.share-trade-btn-container {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+
+.share-trade-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-size: 1.5rem; /* Match settings-button */
+}
+
+.share-trade-btn.copied {
+  background: #e6f4ea;
+  border-color: #a8d5b0;
+}
+
+.share-trade-btn__icon--success {
+  color: green;
+  font-size: 1rem;
+}
+
+.share-trade-btn__expand {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  transition: max-width 0.3s ease, opacity 0.3s ease;
+}
+
+.share-trade-btn__expand--visible {
+  max-width: 300px;
+  opacity: 1;
+}
+
+.share-trade-btn__link-text {
+  border-left: 1px solid var(--border-color);
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  font-family: monospace;
+  user-select: all;
+}
+
+.share-trade-btn--inactive {
+  opacity: 0.4;
+  cursor: not-allowed
 }
 
 /* Trade Setup */
